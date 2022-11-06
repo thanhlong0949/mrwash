@@ -1,0 +1,80 @@
+name: any_wash
+description: A new Flutter application.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.3+4
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  ferry: ^0.11.2
+  gql_http_link: ^0.4.4
+  capstone_laundry_client:
+    path: ../capstone_laundry_client
+  cupertino_icons: ^1.0.5
+  country_code_picker: ^2.0.2
+  flutter_bloc: ^8.1.1
+  flutter_phoenix: ^1.1.0
+  shared_preferences: ^2.0.15
+  animation_wrappers: ^3.0.0
+  google_maps_flutter: ^2.2.1
+  flutter_polyline_points: ^1.0.0
+  google_mobile_ads: ^2.1.0
+  equatable: ^2.0.5
+  firebase_auth: ^3.11.2
+  firebase_core: ^1.24.0
+  get_it: ^7.2.0
+  ferry_flutter: ^0.6.2
+
+dev_dependencies:
+  ferry_generator: ^0.6.1
+  build_runner: ^2.3.2
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.10.0
+
+
+flutter_launcher_name:
+  name: "Any Wash"
+
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/appIcon.png"
+
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/Icons/
+    - assets/address/
+    - assets/Services/
+    - assets/Stores/
+    - assets/FooterMenu/
+    - assets/Account/
+    - assets/Items/
+    - assets/PaymentOptions/
+    - assets/TrackingIcons/
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: fonts/Poppins/Poppins-Bold.ttf
+        - asset: fonts/Poppins/Poppins-BoldItalic.ttf
+        - asset: fonts/Poppins/Poppins-Light.ttf
+        - asset: fonts/Poppins/Poppins-LightItalic.ttf
+        - asset: fonts/Poppins/Poppins-Medium.ttf
+        - asset: fonts/Poppins/Poppins-MediumItalic.ttf
+        - asset: fonts/Poppins/Poppins-Regular.ttf
+        - asset: fonts/Poppins/Poppins-Thin.ttf
+
+

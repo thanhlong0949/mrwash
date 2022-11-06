@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "850197639562",
+    "project_id": "lds-system",
+    "storage_bucket": "lds-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850197639562:android:2f046b0ea13c0bf2765873",
+        "android_client_info": {
+          "package_name": "com.flutter.any_wash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "850197639562-5pu1c7df384ea0np619bc3bv2ejrbv6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQCn6ZJbrtgIESl-w7rMNnSLesyPF8RPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "850197639562-5pu1c7df384ea0np619bc3bv2ejrbv6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
