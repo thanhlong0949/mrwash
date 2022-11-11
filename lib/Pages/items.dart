@@ -3,10 +3,8 @@ import 'package:any_wash/Components/custom_appbar.dart';
 import 'package:any_wash/Locale/locales.dart';
 import 'package:any_wash/Routes/routes.dart';
 import 'package:any_wash/Theme/colors.dart';
-import 'package:any_wash/src/list_equipment.dart';
+import 'package:any_wash/src/screen/list_equipment.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import '../src/list_equipment.dart';
 
 class ItemsInfo {
   final String? name;
