@@ -1,12 +1,15 @@
+import 'package:any_wash/Auth/MobileNumber/UI/phone_number.dart';
 import 'package:any_wash/Auth/login_navigator.dart';
 import 'package:any_wash/Components/entry_field.dart';
 import 'package:any_wash/Locale/locales.dart';
 import 'package:any_wash/Theme/colors.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MobileInput extends StatefulWidget {
+  static String verify = "";
   @override
   _MobileInputState createState() => _MobileInputState();
 }
@@ -14,6 +17,7 @@ class MobileInput extends StatefulWidget {
 class _MobileInputState extends State<MobileInput> {
   final TextEditingController _controller = TextEditingController();
   String? isoCode;
+  String? isoNum;
 
   @override
   void initState() {
@@ -36,10 +40,10 @@ class _MobileInputState extends State<MobileInput> {
           children: <Widget>[
             CountryCodePicker(
               onChanged: (value) {
-                isoCode = value.code;
+                isoCode = value.dialCode;
               },
               builder: (value) => buildButton(value),
-              initialSelection: '+84',
+              initialSelection: 'US',
               textStyle: Theme.of(context)
                   .textTheme
                   .caption!
@@ -79,8 +83,18 @@ class _MobileInputState extends State<MobileInput> {
                   ),
                   backgroundColor: Theme.of(context).primaryColor,
                   elevation: 2),
-              onPressed: () {
-                Navigator.pushNamed(context, LoginRoutes.signUp);
+              onPressed: () async {
+                await FirebaseAuth.instance.verifyPhoneNumber(
+                    phoneNumber: '${isoCode.toString() + _controller.text}',
+                    // phoneNumber: "+840844400046",
+                    verificationCompleted:
+                        (PhoneAuthCredential phoneAuthCredential) {},
+                    verificationFailed: (FirebaseAuthException e) {},
+                    codeSent: (String verificationId, int? resendToken) {
+                      MobileInput.verify = verificationId;
+                      Navigator.pushNamed(context, LoginRoutes.verification);
+                    },
+                    codeAutoRetrievalTimeout: (String verificationId) {});
               },
             ),
           ],

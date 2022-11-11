@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:animation_wrappers/animation_wrappers.dart';
+import 'package:any_wash/Auth/MobileNumber/UI/mobile_input.dart';
 import 'package:any_wash/Components/bottom_bar.dart';
 import 'package:any_wash/Components/entry_field.dart';
 import 'package:any_wash/Locale/locales.dart';
 import 'package:any_wash/Theme/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -51,7 +53,7 @@ class OtpVerify extends StatefulWidget {
 
 class _OtpVerifyState extends State<OtpVerify> {
   final TextEditingController _controller = TextEditingController();
-
+  final FirebaseAuth auth = FirebaseAuth.instance;
   // VerificationBloc _verificationBloc;
   bool isDialogShowing = false;
   int _counter = 20;
@@ -76,6 +78,7 @@ class _OtpVerifyState extends State<OtpVerify> {
 
   void verifyPhoneNumber() {
     //verify phone number method using otp
+
     _startTimer();
   }
 
@@ -145,7 +148,7 @@ class _OtpVerifyState extends State<OtpVerify> {
                           ),
                         ),
                         onPressed: _counter < 1
-                            ? () {
+                            ? () async {
                                 verifyPhoneNumber();
                               }
                             : null),
@@ -157,7 +160,17 @@ class _OtpVerifyState extends State<OtpVerify> {
         ),
         BottomBar(
             text: AppLocalizations.of(context)!.continueText,
-            onTap: () {
+            onTap: () async {
+              try {
+                PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                    verificationId: MobileInput.verify,
+                    smsCode: _controller.toString());
+                print("123");
+                print(_controller.toString());
+                await auth.signInWithCredential(credential);
+                print("object");
+                // widget.onVerificationDone();
+              } catch (e) {}
               widget.onVerificationDone();
             }),
       ],

@@ -1,5 +1,6 @@
 import 'package:any_wash/Routes/routes.dart';
 import 'package:ferry/ferry.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,11 @@ import 'package:get_it/get_it.dart';
 import 'package:capstone_laundry_client/client.dart';
 
 void main() async {
-  
+  //firebase start
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+//database
   GetIt.instance.registerSingleton<Client>(
       initClient('http://128.199.110.106:8080/v1/graphql'));
   SystemChrome.setSystemUIOverlayStyle(
