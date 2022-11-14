@@ -52,7 +52,7 @@ class OtpVerify extends StatefulWidget {
 }
 
 class _OtpVerifyState extends State<OtpVerify> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController(text: "");
   final FirebaseAuth auth = FirebaseAuth.instance;
   // VerificationBloc _verificationBloc;
   bool isDialogShowing = false;
@@ -84,6 +84,8 @@ class _OtpVerifyState extends State<OtpVerify> {
 
   @override
   void dispose() {
+    print("Disposing");
+    print(_controller);
     _controller.dispose();
     _timer.cancel();
     super.dispose();
@@ -116,12 +118,11 @@ class _OtpVerifyState extends State<OtpVerify> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: EntryField(
-                    // controller: _controller,
+                    controller: _controller,
                     readOnly: false,
                     label: AppLocalizations.of(context)!.verificationCode,
                     maxLength: 6,
                     keyboardType: TextInputType.number,
-                    initialValue: '\n' + '1 2 3 4 5 6',
                   ),
                 ),
                 Spacer(),
@@ -164,14 +165,10 @@ class _OtpVerifyState extends State<OtpVerify> {
               try {
                 PhoneAuthCredential credential = PhoneAuthProvider.credential(
                     verificationId: MobileInput.verify,
-                    smsCode: _controller.toString());
-                print("123");
-                print(_controller.toString());
+                    smsCode: _controller.text);
                 await auth.signInWithCredential(credential);
-                print("object");
-                // widget.onVerificationDone();
+                widget.onVerificationDone();
               } catch (e) {}
-              widget.onVerificationDone();
             }),
       ],
     );

@@ -43,7 +43,8 @@ class _MobileInputState extends State<MobileInput> {
                 isoCode = value.dialCode;
               },
               builder: (value) => buildButton(value),
-              initialSelection: 'US',
+              onInit: (value) => isoCode = value?.dialCode,
+              initialSelection: 'VN',
               textStyle: Theme.of(context)
                   .textTheme
                   .caption!
