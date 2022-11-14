@@ -15,70 +15,33 @@ class EquipmentList extends StatefulWidget {
 }
 
 class _EquipmentListState extends State<EquipmentList> {
+  final List<String> names = [];
+
   @override
   Widget build(BuildContext context) {
     final client = GetIt.I<Client>();
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Operation(
-                      operationRequest: GAllEquipmentReq(),
-                      client: client,
-                      builder: ((
-                        BuildContext context,
-                        OperationResponse<GAllEquipmentData, GAllEquipmentVars>?
-                            response,
-                        Object? error,
-                      ) {
-                        if (response!.loading) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        final equipments =
-                            response.data?.laundry_service_equipment;
-                        String _choice = equipments!.first.equipment_name;
-                        return Column(
-                          children: [
-                            for (var index = 0;
-                                index < equipments!.length;
-                                index++)
-                              Row(
-                                children: [
-                                  EquipmentListTile(
-                                    equipments: equipments![index],
-                                  ),
-                                  Radio(
-                                    value: '',
-                                    groupValue: _choice,
-                                    onChanged: (value) {
-                                      setState(
-                                        () {
-                                          _choice =
-                                              equipments[index].equipment_name;
-                                        },
-                                      );
-                                      log(_choice);
-                                    },
-                                  ),
-                                ],
-                              ),
-                          ],
-                        );
-                      }),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return Operation(
+      operationRequest: GAllEquipmentReq(),
+      client: client,
+      builder: ((
+        BuildContext context,
+        OperationResponse<GAllEquipmentData, GAllEquipmentVars>? response,
+        Object? error,
+      ) {
+        if (response!.loading) {
+          return Center(child: CircularProgressIndicator());
+        }
+        final equipments = response.data?.laundry_service_equipment;
+        return ListView.builder(
+            itemCount: equipments!.length,
+            itemBuilder: (context, index) => EquipmentListTile(
+                  equipment: equipments[index],
+                  onTap: () {
+                    names.add(equipments[index].equipment_name);
+                    print(names);
+                  },
+                ));
+      }),
     );
   }
 }
