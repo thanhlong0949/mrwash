@@ -46,12 +46,12 @@ class _EquipmentListState extends State<EquipmentList> {
                         return Column(
                           children: [
                             for (var index = 0;
-                                index < equipments!.length;
+                                index < equipments.length;
                                 index++)
                               Row(
                                 children: [
                                   EquipmentListTile(
-                                    equipments: equipments![index],
+                                    equipments: equipments[index],
                                   ),
                                   Radio(
                                     value: '',
