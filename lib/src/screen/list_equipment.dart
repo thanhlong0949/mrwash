@@ -15,6 +15,8 @@ class EquipmentList extends StatefulWidget {
 }
 
 class _EquipmentListState extends State<EquipmentList> {
+  final List<String> names = [];
+
   @override
   Widget build(BuildContext context) {
     final client = GetIt.I<Client>();
@@ -46,12 +48,12 @@ class _EquipmentListState extends State<EquipmentList> {
                         return Column(
                           children: [
                             for (var index = 0;
-                                index < equipments.length;
+                                index < equipments!.length;
                                 index++)
                               Row(
                                 children: [
                                   EquipmentListTile(
-                                    equipments: equipments[index],
+                                    equipments: equipments![index],
                                   ),
                                   Radio(
                                     value: '',
