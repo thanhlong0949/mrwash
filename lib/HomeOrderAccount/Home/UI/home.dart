@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:animation_wrappers/animation_wrappers.dart';
 import 'package:any_wash/Components/card_content.dart';
 import 'package:any_wash/Components/custom_appbar.dart';
@@ -8,23 +6,18 @@ import 'package:any_wash/Locale/locales.dart';
 import 'package:any_wash/Routes/routes.dart';
 import 'package:any_wash/Theme/colors.dart';
 import 'package:any_wash/Theme/styles.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:any_wash/src/vendor.dart';
+import 'package:capstone_laundry_client/client.dart';
+import 'package:ferry/ferry.dart';
+import 'package:ferry_flutter/ferry_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Home();
   }
-}
-
-class DetailsOfStore {
-  final String name;
-  final String address;
-  final String rating;
-  final String image;
-
-  DetailsOfStore(this.name, this.address, this.rating, this.image);
 }
 
 class Home extends StatefulWidget {
@@ -86,22 +79,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    List<DetailsOfStore> detailsOfStore = [
-      DetailsOfStore('MR Wash Gò Vấp', ' 6.4 km | Phan Văn Trị', '4.2',
-          'assets/Stores/1.png'),
-      DetailsOfStore('MR Wash Quận 3', ' 6.4 km | Phạm Ngọc Thạch', '4.8',
-          'assets/Stores/1.png'),
-      DetailsOfStore('MR Wash Quận 9', ' 6.4 km | Lê Văn Việt', '4.5',
-          'assets/Stores/1.png'),
-      DetailsOfStore('MR Wash Quận 7', ' 6.4 km | Nguyễn Duy Trinh', '3.9',
-          'assets/Stores/1.png'),
-      DetailsOfStore('MR Wash Quận 12', ' 6.4 km | Nguyễn Ảnh Thủ', '4.5',
-          'assets/Stores/1.png'),
-      DetailsOfStore('MR Wash Gò Vấp', ' 6.4 km | Phan Văn Trị', '4.2',
-          'assets/Stores/1.png'),
-      DetailsOfStore('MR Wash Quận 3', ' 6.4 km | Phạm Ngọc Thạch', '4.2',
-          'assets/Stores/1.png'),
-    ];
+    final client = GetIt.I<Client>();
+    List<Vendor> listVendor = [];
     var appLocalization = AppLocalizations.of(context)!;
     String? value = appLocalization.homeText;
     return Scaffold(
@@ -268,235 +247,265 @@ class _HomeState extends State<Home> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 100,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: detailsOfStore.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20.0, top: 25.3, right: 20.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, PageRoutes.items);
-                                },
-                                child: Row(
-                                  children: <Widget>[
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: FadedScaleAnimation(
-                                        child: Image(
-                                          image: AssetImage(
-                                              detailsOfStore[index].image),
-                                          height: 80,
-                                        ),
-                                        //durationInMilliseconds: 400,
-                                      ),
-                                    ),
-                                    SizedBox(width: 13.3),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                      child: Operation(
+                          operationRequest: GAllVendorReq(),
+                          builder: (BuildContext context,
+                              OperationResponse<GAllVendorData, GAllVendorVars>?
+                                  response,
+                              Object? error) {
+                            if (response!.loading) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            final vendors =
+                                response.data?.laundry_service_vendor;
+                            for (var ven in vendors!) {
+                              var vendor = Vendor(
+                                  ven.city,
+                                  ven.district,
+                                  ven.email,
+                                  ven.vendor_id,
+                                  ven.vendor_name,
+                                  ven.phone,
+                                  ven.street,
+                                  ven.zip_code);
+                              listVendor.add(vendor);
+                            }
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemCount: listVendor.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 20.0, top: 25.3, right: 20.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, PageRoutes.items);
+                                    },
+                                    child: Row(
                                       children: <Widget>[
-                                        Text(detailsOfStore[index].name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .secondaryHeaderColor)),
-                                        SizedBox(height: 8.0),
-                                        Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.location_on,
-                                              color: kIconColor,
-                                              size: 10,
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: FadedScaleAnimation(
+                                            child: Image(
+                                              image: AssetImage(
+                                                  'assets/Stores/1.png'),
+                                              height: 80,
                                             ),
-                                            SizedBox(width: 5.0),
-                                            Text(detailsOfStore[index].address,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .caption!
-                                                    .copyWith(
-                                                        color: kLightTextColor,
-                                                        fontSize: 10.0)),
-                                          ],
+                                            //durationInMilliseconds: 400,
+                                          ),
                                         ),
-                                        SizedBox(height: 10.3),
-                                        Row(
+                                        SizedBox(width: 13.3),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            FadedScaleAnimation(
-                                              child: Icon(
-                                                Icons.star,
-                                                color: Colors.yellow,
-                                                size: 10,
-                                              ),
-                                              //durationInMilliseconds: 400,
-                                            ),
-                                            SizedBox(width: 10.0),
-                                            Text(detailsOfStore[index].rating,
+                                            Text(listVendor[index].name,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .caption!
+                                                    .subtitle2!
                                                     .copyWith(
                                                         color: Theme.of(context)
-                                                                    .scaffoldBackgroundColor ==
-                                                                Colors.black
-                                                            ? Colors.white
-                                                            : kMainTextColor,
-                                                        fontSize: 10.0,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
+                                                            .secondaryHeaderColor)),
+                                            SizedBox(height: 8.0),
+                                            Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.location_on,
+                                                  color: kIconColor,
+                                                  size: 16,
+                                                ),
+                                                SizedBox(width: 5.0),
+                                                Text(listVendor[index].street,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .caption!
+                                                        .copyWith(
+                                                            color:
+                                                                kLightTextColor,
+                                                            fontSize: 10.0)),
+                                              ],
+                                            ),
+                                            SizedBox(height: 10.3),
+                                            Row(
+                                              children: <Widget>[
+                                                FadedScaleAnimation(
+                                                  child: Icon(
+                                                    Icons.phone,
+                                                    color: Colors.yellow,
+                                                    size: 16,
+                                                  ),
+                                                  //durationInMilliseconds: 400,
+                                                ),
+                                                SizedBox(width: 10.0),
+                                                Text(listVendor[index].phone,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .caption!
+                                                        .copyWith(
+                                                            color: Theme.of(context)
+                                                                        .scaffoldBackgroundColor ==
+                                                                    Colors.black
+                                                                ? Colors.white
+                                                                : kMainTextColor,
+                                                            fontSize: 10.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                              ],
+                                            ),
                                           ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
+                                  ),
+                                );
+                              },
                             );
-                          }),
+                          },
+                          client: client),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: 16.0, left: 24.0, right: 24.0, bottom: 8),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            appLocalization.bestRated!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline4!
-                                .copyWith(
-                                    fontSize: 20, fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            width: 5.0,
-                          ),
-                          Text(
-                            appLocalization.laundries!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(
-                                    fontWeight: FontWeight.w500, fontSize: 16),
-                          ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, PageRoutes.storesPage);
-                            },
-                            child: Text(
-                              appLocalization.viewAll!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      color: kMainColor),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 100,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: detailsOfStore.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                left: 20.0,
-                                top: 25.3,
-                                right: 20.0,
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, PageRoutes.items);
-                                },
-                                child: Row(
-                                  children: <Widget>[
-                                    ClipRRect(
-                                      child: FadedScaleAnimation(
-                                        child: Image(
-                                          image: AssetImage(
-                                              detailsOfStore[index].image),
-                                          height: 80,
-                                        ),
-                                        //durationInMilliseconds: 400,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    SizedBox(width: 13.3),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(detailsOfStore[index].name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .secondaryHeaderColor)),
-                                        SizedBox(height: 8.0),
-                                        Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.location_on,
-                                              color: kIconColor,
-                                              size: 10,
-                                            ),
-                                            SizedBox(width: 5.0),
-                                            Text(detailsOfStore[index].address,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .caption!
-                                                    .copyWith(
-                                                        color: kLightTextColor,
-                                                        fontSize: 10.0)),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10.3),
-                                        Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.star,
-                                              color: Colors.yellow,
-                                              size: 10,
-                                            ),
-                                            SizedBox(width: 10.0),
-                                            Text(detailsOfStore[index].rating,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .caption!
-                                                    .copyWith(
-                                                        color: Theme.of(context)
-                                                                    .scaffoldBackgroundColor ==
-                                                                Colors.black
-                                                            ? Colors.white
-                                                            : kMainTextColor,
-                                                        fontSize: 10.0,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(
+                    //       top: 16.0, left: 24.0, right: 24.0, bottom: 8),
+                    //   child: Row(
+                    //     children: <Widget>[
+                    //       Text(
+                    //         appLocalization.bestRated!,
+                    //         style: Theme.of(context)
+                    //             .textTheme
+                    //             .headline4!
+                    //             .copyWith(
+                    //                 fontSize: 20, fontWeight: FontWeight.w500),
+                    //       ),
+                    //       SizedBox(
+                    //         width: 5.0,
+                    //       ),
+                    //       Text(
+                    //         appLocalization.laundries!,
+                    //         style: Theme.of(context)
+                    //             .textTheme
+                    //             .bodyText1!
+                    //             .copyWith(
+                    //                 fontWeight: FontWeight.w500, fontSize: 16),
+                    //       ),
+                    //       Spacer(),
+                    //       GestureDetector(
+                    //         onTap: () {
+                    //           Navigator.pushNamed(
+                    //               context, PageRoutes.storesPage);
+                    //         },
+                    //         child: Text(
+                    //           appLocalization.viewAll!,
+                    //           style: Theme.of(context)
+                    //               .textTheme
+                    //               .headline4!
+                    //               .copyWith(
+                    //                   fontSize: 16,
+                    //                   fontWeight: FontWeight.w700,
+                    //                   color: kMainColor),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Container(
+                    //   width: MediaQuery.of(context).size.width,
+                    //   color: Colors.amber,
+                    //   height: 150,
+                    //   child: ListView.builder(
+                    //     scrollDirection: Axis.horizontal,
+                    //     shrinkWrap: true,
+                    //     itemCount: listVendor.length,
+                    //     itemBuilder: (context, index) {
+                    //       return Padding(
+                    //         padding: EdgeInsets.only(
+                    //             left: 20.0, top: 25.3, right: 20.0),
+                    //         child: GestureDetector(
+                    //           onTap: () {
+                    //             Navigator.pushNamed(context, PageRoutes.items);
+                    //           },
+                    //           child: Row(
+                    //             children: <Widget>[
+                    //               ClipRRect(
+                    //                 borderRadius: BorderRadius.circular(8),
+                    //                 child: FadedScaleAnimation(
+                    //                   child: Image(
+                    //                     image:
+                    //                         AssetImage('assets/Stores/1.png'),
+                    //                     height: 80,
+                    //                   ),
+                    //                   //durationInMilliseconds: 400,
+                    //                 ),
+                    //               ),
+                    //               SizedBox(width: 13.3),
+                    //               Column(
+                    //                 crossAxisAlignment:
+                    //                     CrossAxisAlignment.start,
+                    //                 children: <Widget>[
+                    //                   Text(listVendor[index].name,
+                    //                       style: Theme.of(context)
+                    //                           .textTheme
+                    //                           .subtitle2!
+                    //                           .copyWith(
+                    //                               color: Theme.of(context)
+                    //                                   .secondaryHeaderColor)),
+                    //                   SizedBox(height: 8.0),
+                    //                   Row(
+                    //                     children: <Widget>[
+                    //                       Icon(
+                    //                         Icons.location_on,
+                    //                         color: kIconColor,
+                    //                         size: 16,
+                    //                       ),
+                    //                       SizedBox(width: 5.0),
+                    //                       Text(listVendor[index].street,
+                    //                           style: Theme.of(context)
+                    //                               .textTheme
+                    //                               .caption!
+                    //                               .copyWith(
+                    //                                   color: kLightTextColor,
+                    //                                   fontSize: 10.0)),
+                    //                     ],
+                    //                   ),
+                    //                   SizedBox(height: 10.3),
+                    //                   Row(
+                    //                     children: <Widget>[
+                    //                       FadedScaleAnimation(
+                    //                         child: Icon(
+                    //                           Icons.phone,
+                    //                           color: Colors.yellow,
+                    //                           size: 16,
+                    //                         ),
+                    //                         //durationInMilliseconds: 400,
+                    //                       ),
+                    //                       SizedBox(width: 10.0),
+                    //                       Text(listVendor[index].phone,
+                    //                           style: Theme.of(context)
+                    //                               .textTheme
+                    //                               .caption!
+                    //                               .copyWith(
+                    //                                   color: Theme.of(context)
+                    //                                               .scaffoldBackgroundColor ==
+                    //                                           Colors.black
+                    //                                       ? Colors.white
+                    //                                       : kMainTextColor,
+                    //                                   fontSize: 10.0,
+                    //                                   fontWeight:
+                    //                                       FontWeight.bold)),
+                    //                     ],
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 20,
                     ),

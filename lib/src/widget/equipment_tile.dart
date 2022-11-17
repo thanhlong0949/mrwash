@@ -1,8 +1,9 @@
+import 'package:any_wash/src/equipment.dart';
 import 'package:capstone_laundry_client/client.dart';
 import 'package:flutter/material.dart';
 
 class EquipmentListTile extends StatelessWidget {
-  final GAllEquipmentData_laundry_service_equipment equipment;
+  final Equipment equipment;
   final void Function()? onTap;
   const EquipmentListTile({Key? key, required this.equipment, this.onTap})
       : super(key: key);
@@ -14,14 +15,12 @@ class EquipmentListTile extends StatelessWidget {
       leading: Container(
         width: 64,
         height: 64,
-        child: Image.network(
-          'https://picsum.photos/250?image=9',
-          fit: BoxFit.fill,
-          width: 64,
+        child: Image(
+          image: AssetImage('assets/Items/item_tshirts.png'),
         ),
       ),
       title: Text(
-        equipment.equipment_name,
+        equipment.name,
         style: TextStyle(
           fontSize: 18,
           color: Colors.black87,
@@ -29,7 +28,7 @@ class EquipmentListTile extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        equipment.equipment_description,
+        equipment.description,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(fontSize: 13, color: Colors.blueGrey),
       ),
@@ -37,7 +36,7 @@ class EquipmentListTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            equipment.equipment_price,
+            equipment.price,
             textAlign: TextAlign.center,
           ),
           Icon(
