@@ -31,6 +31,7 @@ dependencies:
   firebase_core: ^1.24.0
   get_it: ^7.2.0
   ferry_flutter: ^0.6.2
+  provider: ^6.0.4
 
 dev_dependencies:
   ferry_generator: ^0.6.1

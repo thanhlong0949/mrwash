@@ -3,6 +3,7 @@ import 'package:any_wash/Components/card_content.dart';
 import 'package:any_wash/Components/custom_appbar.dart';
 import 'package:any_wash/Components/reusable_card.dart';
 import 'package:any_wash/Locale/locales.dart';
+import 'package:any_wash/Pages/items.dart';
 import 'package:any_wash/Routes/routes.dart';
 import 'package:any_wash/Theme/colors.dart';
 import 'package:any_wash/Theme/styles.dart';
@@ -280,8 +281,14 @@ class _HomeState extends State<Home> {
                                       left: 20.0, top: 25.3, right: 20.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      Navigator.pushNamed(
-                                          context, PageRoutes.items);
+                                      Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                          builder: (context) => new ItemsPage(
+                                            vendor: listVendor[index],
+                                          ),
+                                        ),
+                                      );
                                     },
                                     child: Row(
                                       children: <Widget>[

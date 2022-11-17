@@ -1,8 +1,10 @@
 import 'package:animation_wrappers/animation_wrappers.dart';
 import 'package:any_wash/Components/custom_appbar.dart';
 import 'package:any_wash/Locale/locales.dart';
+import 'package:any_wash/Pages/items.dart';
 import 'package:any_wash/Routes/routes.dart';
 import 'package:any_wash/Theme/colors.dart';
+import 'package:any_wash/src/vendor.dart';
 import 'package:ferry/ferry.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -11,7 +13,7 @@ import 'package:ferry_flutter/ferry_flutter.dart';
 
 class StoresPage extends StatelessWidget {
   final String pageTitle;
-
+  List<Vendor> listVendor = [];
   StoresPage(this.pageTitle);
 
   @override
@@ -53,7 +55,18 @@ class StoresPage extends StatelessWidget {
                     return Center(child: CircularProgressIndicator());
                   }
                   final vendor = response.data?.laundry_service_vendor;
-
+                  for (var ven in vendor!) {
+                    var vendor = Vendor(
+                        ven.city,
+                        ven.district,
+                        ven.email,
+                        ven.vendor_id,
+                        ven.vendor_name,
+                        ven.phone,
+                        ven.street,
+                        ven.zip_code);
+                    listVendor.add(vendor);
+                  }
                   return ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -64,7 +77,14 @@ class StoresPage extends StatelessWidget {
                               left: 20.0, top: 25.3, right: 20.0),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, PageRoutes.items);
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                  builder: (context) => new ItemsPage(
+                                    vendor: listVendor[index],
+                                  ),
+                                ),
+                              );
                             },
                             child: Row(
                               children: <Widget>[

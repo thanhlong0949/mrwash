@@ -1,9 +1,22 @@
-class Order {
-  final int id;
-  final int customer_id;
-  final int feedback_id;
-  final int manager_id;
-  final int payment_id;
-  Order(this.id, this.customer_id, this.feedback_id, this.manager_id,
-      this.payment_id);
+import 'package:flutter/material.dart';
+
+class Order with ChangeNotifier {
+  int? id;
+  int? customer_id;
+  int? feedback_id;
+  int? manager_id;
+  int? payment_id;
+  int? service_id;
+  int? equipment_id;
+  set serviceEquip(value) {
+    equipment_id = value;
+    notifyListeners();
+  }
+
+  set serviceId(value) {
+    service_id = value;
+    notifyListeners();
+  }
+
+  Order();
 }

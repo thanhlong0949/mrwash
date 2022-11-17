@@ -20,6 +20,7 @@ import 'package:any_wash/Pages/order_placed.dart';
 import 'package:any_wash/Pages/payment_method.dart';
 import 'package:any_wash/Pages/reviews.dart';
 import 'package:any_wash/Pages/view_cart.dart';
+import 'package:any_wash/src/vendor.dart';
 import 'package:flutter/material.dart';
 
 class PageRoutes {
@@ -59,7 +60,6 @@ class PageRoutes {
       loginNavigator: (context) => LoginNavigator(),
       orderMapPage: (context) => OrderMapPage(),
       chatPage: (context) => ChatPage(),
-      items: (context) => ItemsPage(),
       viewCart: (context) => ViewCart(),
       paymentMethod: (context) => PaymentPage(),
       orderPlaced: (context) => OrderPlaced(),
