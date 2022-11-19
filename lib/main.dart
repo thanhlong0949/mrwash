@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:gql_http_link/gql_http_link.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Auth/login_navigator.dart';
@@ -14,7 +15,17 @@ import 'Locale/locales.dart';
 import 'Theme/theme_cubit.dart';
 import 'map_utils.dart';
 import 'package:get_it/get_it.dart';
-import 'package:capstone_laundry_client/client.dart';
+
+Client initClient(String uri) {
+  final link = HttpLink(
+    uri,
+    defaultHeaders: {
+      'x-hasura-admin-secret': 'myadminsecretkey',
+    },
+  );
+  final client = Client(link: link);
+  return client;
+}
 
 void main() async {
   GetIt.instance.registerSingleton<Client>(

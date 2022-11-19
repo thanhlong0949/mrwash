@@ -1,10 +1,12 @@
 import 'package:any_wash/src/equipment.dart';
+import 'package:any_wash/src/graphql/__generated__/equipment.data.gql.dart';
+import 'package:any_wash/src/graphql/__generated__/equipment.req.gql.dart';
+import 'package:any_wash/src/graphql/__generated__/equipment.var.gql.dart';
 import 'package:any_wash/src/order.dart';
-import 'package:flutter/material.dart';
-import 'package:capstone_laundry_client/client.dart';
 import 'package:ferry/ferry.dart';
-import 'package:get_it/get_it.dart';
 import 'package:ferry_flutter/ferry_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class EquipmentList extends StatefulWidget {
@@ -30,6 +32,7 @@ class _EquipmentListState extends State<EquipmentList> {
           return Center(child: CircularProgressIndicator());
         }
         final equipments = response.data?.laundry_service_equipment;
+
         for (var equip in equipments!) {
           Equipment equipment = Equipment(equip.equipment_description,
               equip.equipment_price, equip.equipment_name, equip.equipment_id);

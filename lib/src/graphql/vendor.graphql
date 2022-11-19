@@ -1,0 +1,12 @@
+query AllVendor {
+  laundry_service_vendor {
+    vendor_name
+    vendor_id
+    zip_code
+    street
+    phone
+    email
+    district
+    city
+  }
+}

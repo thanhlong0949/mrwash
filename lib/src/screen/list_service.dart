@@ -1,11 +1,11 @@
-import 'package:any_wash/src/order.dart';
+import 'package:any_wash/src/graphql/__generated__/service.data.gql.dart';
+import 'package:any_wash/src/graphql/__generated__/service.req.gql.dart';
+import 'package:any_wash/src/graphql/__generated__/service.var.gql.dart';
 import 'package:any_wash/src/service.dart';
-import 'package:flutter/material.dart';
-import 'package:capstone_laundry_client/client.dart';
 import 'package:ferry/ferry.dart';
-import 'package:get_it/get_it.dart';
 import 'package:ferry_flutter/ferry_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class ServiceList extends StatefulWidget {
   const ServiceList({Key? key}) : super(key: key);
@@ -19,21 +19,23 @@ class _ServiceListState extends State<ServiceList> {
     final client = GetIt.I<Client>();
     final List<Service> listService = [];
     return Operation(
-        operationRequest: GAllServiceReq(),
-        builder: (BuildContext context,
-            OperationResponse<GAllServiceData, GAllServiceVars>? response,
-            Object? error) {
-          if (response!.loading)
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          final services = response.data?.laundry_service_service;
-          print(services.toString());
+      operationRequest: GAllServiceReq(),
+      client: client, // fux 1
+      builder: ((BuildContext context,
+          OperationResponse<GAllServiceData, GAllServiceVars>? response,
+          Object? error) {
+        if (response!.loading) {
           return Center(
-            child: Text('a'),
+            child: CircularProgressIndicator(),
           );
-        },
-        client: client);
+        }
+
+        final services = response.data?.laundry_service_service;
+        return Center(
+          child: Text(services.toString()),
+        );
+      }),
+    );
   }
 }
 // return Consumer<Order>(

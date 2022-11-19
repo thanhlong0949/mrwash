@@ -15,8 +15,6 @@ dependencies:
     sdk: flutter
   ferry: ^0.11.2
   gql_http_link: ^0.4.4
-  capstone_laundry_client:
-    path: ../capstone_laundry_client
   cupertino_icons: ^1.0.5
   country_code_picker: ^2.0.2
   flutter_bloc: ^8.1.1
@@ -34,6 +32,7 @@ dependencies:
   provider: ^6.0.4
 
 dev_dependencies:
+  pedantic: ^1.9.0
   ferry_generator: ^0.6.1
   build_runner: ^2.3.2
   flutter_test:

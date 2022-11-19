@@ -1,0 +1,8 @@
+query AllEquipment {
+  laundry_service_equipment {
+    equipment_price
+    equipment_name
+    equipment_id
+    equipment_description
+  }
+}
