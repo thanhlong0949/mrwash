@@ -1,10 +1,10 @@
 import 'package:animation_wrappers/animation_wrappers.dart';
 import 'package:any_wash/Components/custom_appbar.dart';
 import 'package:any_wash/Locale/locales.dart';
+import 'package:any_wash/Pages/view_cart.dart';
 import 'package:any_wash/Routes/routes.dart';
 import 'package:any_wash/Theme/colors.dart';
 import 'package:any_wash/src/screen/list_equipment.dart';
-import 'package:any_wash/src/service.dart';
 import 'package:any_wash/src/vendor.dart';
 import 'package:any_wash/src/screen/list_service.dart';
 import 'package:flutter/material.dart';
@@ -187,20 +187,19 @@ class _ItemsPageState extends State<ItemsPage> {
                   width: 18.3,
                 ),
                 SizedBox(width: 20.7),
-                Text(
-                  'Items: 2 | \$ 7.50',
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle1!
-                      .copyWith(color: Colors.white),
-                ),
                 Spacer(),
                 TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white,
                   ),
-                  onPressed: () =>
-                      Navigator.pushNamed(context, PageRoutes.viewCart),
+                  onPressed: () => Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                      builder: (context) => new ViewCart(
+                        vendor: vendor,
+                      ),
+                    ),
+                  ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(

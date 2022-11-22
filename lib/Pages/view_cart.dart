@@ -3,6 +3,7 @@ import 'package:any_wash/Components/bottom_bar.dart';
 import 'package:any_wash/Locale/locales.dart';
 import 'package:any_wash/Routes/routes.dart';
 import 'package:any_wash/Theme/colors.dart';
+import 'package:any_wash/src/vendor.dart';
 import 'package:flutter/material.dart';
 
 List<DropdownMenuItem<String>> listDrop = [];
@@ -26,14 +27,18 @@ void loadData() {
 }
 
 class ViewCart extends StatefulWidget {
+  Vendor vendor;
+  ViewCart({Key? key, required this.vendor});
   @override
-  _ViewCartState createState() => _ViewCartState();
+  _ViewCartState createState() => _ViewCartState(vendor);
 }
 
 class _ViewCartState extends State<ViewCart> {
+  Vendor vendor;
   int _itemCount = 0;
   // int _itemCount1 = 0;
   // int _itemCount2 = 0;
+  _ViewCartState(this.vendor);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,7 @@ class _ViewCartState extends State<ViewCart> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(AppLocalizations.of(context)!.quickWasher!,
+                      Text(vendor.name,
                           style: Theme.of(context)
                               .textTheme
                               .headline4!
@@ -64,23 +69,36 @@ class _ViewCartState extends State<ViewCart> {
                       SizedBox(
                         height: 10.0,
                       ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
                       Row(
                         children: <Widget>[
                           Icon(
                             Icons.location_on,
-                            color: kIconColor,
-                            size: 12,
+                            color: Colors.black87,
+                            size: 16,
                           ),
                           SizedBox(width: 10.0),
-                          Text('6.4 km ',
-                              style: Theme.of(context).textTheme.overline),
-                          Text('| ',
+                          Text(
+                            vendor.street,
+                            style: Theme.of(context)
+                                .textTheme
+                                .overline!
+                                .copyWith(fontSize: 14),
+                          ),
+                          Text('  |  ',
                               style: Theme.of(context)
                                   .textTheme
                                   .overline!
                                   .copyWith(color: kMainColor)),
-                          Text(AppLocalizations.of(context)!.storeAddress!,
-                              style: Theme.of(context).textTheme.overline),
+                          Text(
+                            'Quận: ' + vendor.district,
+                            style: Theme.of(context)
+                                .textTheme
+                                .overline!
+                                .copyWith(fontSize: 14),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -90,13 +108,47 @@ class _ViewCartState extends State<ViewCart> {
                         children: [
                           Icon(
                             Icons.access_time,
-                            color: kIconColor,
-                            size: 10,
+                            color: Colors.black87,
+                            size: 16,
                           ),
                           SizedBox(width: 10.0),
-                          Text('08:00 - 20:00',
-                              style: Theme.of(context).textTheme.overline),
+                          Text(
+                            '08:00 - 20:00',
+                            style: Theme.of(context)
+                                .textTheme
+                                .overline!
+                                .copyWith(fontSize: 14),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Icon(
+                            Icons.phone,
+                            color: Colors.yellow,
+                            size: 16,
+                          ),
+                          SizedBox(width: 8.0),
+                          Text(
+                            vendor.phone,
+                            style: Theme.of(context)
+                                .textTheme
+                                .overline!
+                                .copyWith(fontSize: 14),
+                          ),
                           Spacer(),
+                          Text('58 reviews',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .overline!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                          SizedBox(width: 8.0),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: kIconColor,
+                            size: 12,
+                          ),
                         ],
                       ),
                     ],

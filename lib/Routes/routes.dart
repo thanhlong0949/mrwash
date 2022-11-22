@@ -60,7 +60,6 @@ class PageRoutes {
       loginNavigator: (context) => LoginNavigator(),
       orderMapPage: (context) => OrderMapPage(),
       chatPage: (context) => ChatPage(),
-      viewCart: (context) => ViewCart(),
       paymentMethod: (context) => PaymentPage(),
       orderPlaced: (context) => OrderPlaced(),
       wallet: (context) => WalletPage(),
