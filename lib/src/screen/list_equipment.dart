@@ -39,16 +39,15 @@ class _EquipmentListState extends State<EquipmentList> {
         }
         return Consumer<Order>(builder: (context, order, child) {
           int _selectedEquipment = -1;
-
-          if (order.equipment_id == null) {
-            _selectedEquipment = 0;
-          } else {
-            for (var i = 0; i < listEquipment.length; i++) {
-              if (order.equipment_id == listEquipment[i].id) {
-                _selectedEquipment = i;
-              }
-            }
-          }
+          // if (order.equipment_id == null) {
+          //   _selectedEquipment = 0;
+          // } else {
+          //   for (var i = 0; i < listEquipment.length; i++) {
+          //     if (order.equipment_id == listEquipment[i].id) {
+          //       _selectedEquipment = i;
+          //     }
+          //   }
+          // }
           ;
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -59,7 +58,7 @@ class _EquipmentListState extends State<EquipmentList> {
                 selectedTileColor: Color.fromARGB(255, 147, 174, 188),
                 onTap: () => setState(
                   () {
-                    order.equipment_id = listEquipment[index].id;
+                    // order.equipment_id = listEquipment[index].id;
                     _selectedEquipment = index;
                     DefaultTabController.of(context)?.animateTo(1);
                   },

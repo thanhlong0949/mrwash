@@ -64,7 +64,9 @@ class _ServiceListState extends State<ServiceList> {
                 selectedTileColor: Color.fromARGB(255, 147, 174, 188),
                 onTap: () => setState(
                   () {
-                    order.service_id = listService[index].id;
+                    // order.service_id = listService[index].id;
+                    order.addService(listService[index]);
+                    print(order.services);
                     _selectedService = index;
                     DefaultTabController.of(context)?.animateTo(1);
                   },
